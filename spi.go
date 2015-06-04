@@ -49,8 +49,7 @@ func (this *MCP2210) Xfer(sendBuffer []byte) ([]byte, error) {
 	
 	// read the data sent by the slave
 	for response[1] == spiTransferSuccess &&
-		response[3] != spiTransferFinished
-	{		
+		response[3] != spiTransferFinished {		
 		response, err = this.sendCommand(
 			cmdTransferSPI,	// opcode
 			byte(0),	// number of bytes to send

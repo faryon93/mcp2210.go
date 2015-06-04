@@ -6,6 +6,32 @@ import (
 
 
 // ----------------------------------------------------------------------------------
+//  Constants
+// ----------------------------------------------------------------------------------
+
+const (
+	DirectionIn			= 0x00
+	DirectionOut		= 0x01
+	
+	ValueInactive		= 0x00
+	ValueActive			= 0x01
+	
+	FunctionGPIO		= 0x00
+	FunctionChipSelect	= 0x01
+	FunctionAlternative	= 0x02
+)
+
+
+// ----------------------------------------------------------------------------------
+//  Setters
+// ----------------------------------------------------------------------------------
+
+func (this *MCP2210) setCurrentPinValues(low uint16, high uint16) {
+	this.currentPinValues = low | (high<< 8)
+}
+
+
+// ----------------------------------------------------------------------------------
 //  Informational Functions
 // ----------------------------------------------------------------------------------
 
@@ -15,19 +41,13 @@ func (this *MCP2210) updateGPIOValues() error {
 	}
 	
 	// assemble and send command
-	command := []byte{
-		cmdGetPinValue,
-	}
-	this.hidDevice.Write(command)
-
-	// read the answer (6 bytes long)
-	response, err := this.readResponse(6)
+	response, err := this.sendCommand(cmdGetPinValue)
 	if err != nil {
 		return err
 	}
 	
 	// everything is fine, update the GPIO values
-	this.currentPinValues = uint16(response[4]) | (uint16(response[5]) << 8)
+	this.setCurrentPinValues(uint16(response[4]), uint16(response[5]))
 	return nil
 }
 
@@ -47,17 +67,22 @@ func (this *MCP2210) SetGPIOValue(pin uint16, state uint16) error {
 	} else {
 		this.currentPinValues &= ^(1 << pin)
 	}
-		
-	// assemble and send command
-	command := []byte{
+	
+	// send the command
+	response, err := this.sendCommand(
 		cmdSetPinValue,	// opcode
 		0x00,			// reserved
 		0x00,			// reserved
 		0x00,			// reserved
 		byte(this.currentPinValues),		// GP 0-7
-		byte(this.currentPinValues >> 8),	// GP 8
+		byte(this.currentPinValues >> 8),	// GP 8			
+	)
+	if err != nil {
+		return err
 	}
-	this.hidDevice.Write(command)
-	
+		
+	// set the actual GPIO values
+	this.setCurrentPinValues(uint16(response[4]), uint16(response[5]))
+		
 	return nil
 }

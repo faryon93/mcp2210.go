@@ -9,19 +9,8 @@ import (
 //  Constants
 // ----------------------------------------------------------------------------------
 
-const (
-	DirectionIn			= 0x00
-	DirectionOut		= 0x01
-	
-	ValueInactive		= 0x00
-	ValueActive			= 0x01
-	
-	FunctionGPIO		= 0x00
-	FunctionChipSelect	= 0x01
-	FunctionAlternative	= 0x02
-)
-
-// for reference see http://ww1.microchip.com/downloads/en/DeviceDoc/22288A.pdf p11 and following
+// for reference see http://ww1.microchip.com/downloads/en/DeviceDoc/22288A.pdf
+// page11 and following
 const (
 	cmdSetPinValue		= 0x30
 	cmdGetPinValue		= 0x33
@@ -81,12 +70,6 @@ func (this *MCP2210) Close() {
 // ----------------------------------------------------------------------------------
 //  Helper Functions
 // ----------------------------------------------------------------------------------
-
-func (this *MCP2210) readResponse(length int) ([]byte, error) {
-	response := make([]byte, length)
-	_, error := this.hidDevice.Read(response)
-	return response, error
-}
 
 func (this *MCP2210) sendCommand(opcode byte, payload ...byte) ([]byte, error) {
 	// send command to mcp
