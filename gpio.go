@@ -62,6 +62,7 @@ func (this *MCP2210) GetGPIOValue(pin uint16) (uint8, error) {
 		return 0xFF, err
 	}
 	
+	// 1 = active/high, 0 = inactive/low
 	return uint8((this.currentPinValues & (1 << pin)) >> pin), nil
 }
 
@@ -96,6 +97,6 @@ func (this *MCP2210) SetGPIOValue(pin uint16, state uint16) error {
 		
 	// set the actual GPIO values
 	this.setCurrentPinValues(uint16(response[4]), uint16(response[5]))
-		
+			
 	return nil
 }
