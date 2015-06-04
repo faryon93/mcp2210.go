@@ -14,6 +14,7 @@ import (
 // for reference see http://ww1.microchip.com/downloads/en/DeviceDoc/22288A.pdf
 // page11 and following
 const (
+	cmdGetInterrupt		= 0x12
 	cmdSetPinValue		= 0x30
 	cmdGetPinValue		= 0x31
 	cmdTransferSPI		= 0x42

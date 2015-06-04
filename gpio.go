@@ -29,6 +29,11 @@ const (
 	FunctionAlternative	= 0x02
 )
 
+const (
+	counterReset	= 0x00
+	counterKeep		= 0x26
+)
+
 
 // ----------------------------------------------------------------------------------
 //  Setters
@@ -75,6 +80,27 @@ func (this *MCP2210) GetGPIOValue(pin uint16) (uint8, error) {
 	// 1 = active/high, 0 = inactive/low
 	return uint8((this.currentPinValues & (1 << pin)) >> pin), nil
 }
+
+// Gets the external interrupt counter value and resets it to zero.
+// Interrupt signaling is available on GP6, if it is configured
+// with alternative pin function.
+func (this *MCP2210) GetInterruptCount() (uint16, error) {
+	if this.hidDevice == nil {
+		return 0xFF, errors.New("device not opened")
+	}
+
+	// submit command
+	response, err := this.sendCommand(
+		cmdGetInterrupt,
+		counterReset,	// reset the counter
+	)
+	if err != nil {
+		return 0xFF, err
+	}
+
+	return uint16(response[4]) | (uint16(response[5]) << 8), nil
+}
+
 
 // ----------------------------------------------------------------------------------
 //  Changing Functions
