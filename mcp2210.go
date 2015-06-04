@@ -1,3 +1,5 @@
+// A wrapper library for Microchip's MCP2210 USB-toSPI Bridge.
+// It is heavly based on github.com/GeertJohan/go.hid.
 package mcp2210
 
 import (
@@ -34,6 +36,7 @@ type MCP2210 struct {
 //  Constructors
 // ----------------------------------------------------------------------------------
 
+// Opens a MCP2210 device with the given VendorId and ProductId.
 func Open(vendorId uint16, productId uint16) (*MCP2210, error) {
 	// open the hid device
 	// TODO: check serial number feature
@@ -64,6 +67,7 @@ func Open(vendorId uint16, productId uint16) (*MCP2210, error) {
 //  Changing Functions
 // ----------------------------------------------------------------------------------
 
+// Closes the connection to the device.
 func (this *MCP2210) Close() {
 	this.hidDevice.Close()
 }

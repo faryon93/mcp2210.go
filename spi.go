@@ -21,6 +21,7 @@ const (
 //  Changing Functions
 // ----------------------------------------------------------------------------------
 
+// Sends some bytes and returns the received bytes
 func (this *MCP2210) Xfer(sendBuffer []byte) ([]byte, error) {
 	if this.hidDevice == nil {
 		return nil, errors.New("device not opened")

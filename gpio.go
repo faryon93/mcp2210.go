@@ -9,15 +9,23 @@ import (
 //  Constants
 // ----------------------------------------------------------------------------------
 
+// GPIO constants
 const (
+	// Pin direction: input
 	DirectionIn			= 0x00
+	// Pin direction: output
 	DirectionOut		= 0x01
 	
+	// Pin value: inactive/low
 	ValueInactive		= 0x00
+	// Pin value: active/high
 	ValueActive			= 0x01
 	
+	// Pin function: GPIO
 	FunctionGPIO		= 0x00
+	// Pin function: SPI Chip-Select
 	FunctionChipSelect	= 0x01
+	// Pin function: Alternative
 	FunctionAlternative	= 0x02
 )
 
@@ -51,6 +59,8 @@ func (this *MCP2210) updateGPIOValues() error {
 	return nil
 }
 
+// Get the current value of a GPIO pin.
+// Returns ValueInactive or ValueActive. 
 func (this *MCP2210) GetGPIOValue(pin uint16) (uint8, error) {
 	if this.hidDevice == nil {
 		return 0xFF, errors.New("device not opened")
@@ -70,6 +80,9 @@ func (this *MCP2210) GetGPIOValue(pin uint16) (uint8, error) {
 //  Changing Functions
 // ----------------------------------------------------------------------------------
 
+// Sets the value of a GPIO pin.
+// pin Number of the pin to set.
+// state New pinstate, use ValueInactive or ValueActive
 func (this *MCP2210) SetGPIOValue(pin uint16, state uint16) error {
 	if this.hidDevice == nil {
 		return errors.New("device not opened")

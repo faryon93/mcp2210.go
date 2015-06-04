@@ -9,6 +9,7 @@ import (
 //  Informational Functions
 // ----------------------------------------------------------------------------------
 
+// Reads the byte stored at a specific address in EEPROM.
 func (this *MCP2210) ReadEEPROM(address byte) (byte, error) {
 	if this.hidDevice == nil {
 		return 0xFF, errors.New("device not opened")
@@ -33,6 +34,7 @@ func (this *MCP2210) ReadEEPROM(address byte) (byte, error) {
 //  Changing Functions
 // ----------------------------------------------------------------------------------
 
+// Writes data to the specified Address in EEPROM.
 func (this *MCP2210) WriteEEPROM(address byte, data byte) (error) {
 	if this.hidDevice == nil {
 		return errors.New("device not opened")
