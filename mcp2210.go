@@ -13,7 +13,7 @@ import (
 // page11 and following
 const (
 	cmdSetPinValue		= 0x30
-	cmdGetPinValue		= 0x33
+	cmdGetPinValue		= 0x31
 	cmdTransferSPI		= 0x42
 )
 

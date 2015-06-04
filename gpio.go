@@ -27,7 +27,7 @@ const (
 // ----------------------------------------------------------------------------------
 
 func (this *MCP2210) setCurrentPinValues(low uint16, high uint16) {
-	this.currentPinValues = low | (high<< 8)
+	this.currentPinValues = low | (high << 8)
 }
 
 
@@ -51,6 +51,19 @@ func (this *MCP2210) updateGPIOValues() error {
 	return nil
 }
 
+func (this *MCP2210) GetGPIOValue(pin uint16) (uint8, error) {
+	if this.hidDevice == nil {
+		return 0xFF, errors.New("device not opened")
+	}
+	
+	// update the GPIO values to get the most recent state
+	err := this.updateGPIOValues()
+	if err != nil {
+		return 0xFF, err
+	}
+	
+	return uint8((this.currentPinValues & (1 << pin)) >> pin), nil
+}
 
 // ----------------------------------------------------------------------------------
 //  Changing Functions
