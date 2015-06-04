@@ -15,6 +15,8 @@ const (
 	cmdSetPinValue		= 0x30
 	cmdGetPinValue		= 0x31
 	cmdTransferSPI		= 0x42
+	cmdEEPROMRead		= 0x50
+	cmdEEPROMWrite		= 0x51
 )
 
 
