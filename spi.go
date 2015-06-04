@@ -6,6 +6,18 @@ import (
 
 
 // ----------------------------------------------------------------------------------
+//  Constants
+// ----------------------------------------------------------------------------------
+
+const (
+	maxBytesPerWrite	= 60
+	
+	spiTransferFinished = 0x10
+	spiTransferSuccess  = 0x00
+)
+
+
+// ----------------------------------------------------------------------------------
 //  Changing Functions
 // ----------------------------------------------------------------------------------
 
@@ -36,7 +48,9 @@ func (this *MCP2210) Xfer(sendBuffer []byte) ([]byte, error) {
 	var slaveData []byte 
 	
 	// read the data sent by the slave
-	for response[1] == 0x00 && response[3] != spiTransferFinished {
+	for response[1] == spiTransferSuccess &&
+		response[3] != spiTransferFinished
+	{		
 		response, err = this.sendCommand(
 			cmdTransferSPI,	// opcode
 			byte(0),	// number of bytes to send

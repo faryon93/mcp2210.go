@@ -28,11 +28,6 @@ const (
 	cmdTransferSPI		= 0x42
 )
 
-const (
-	maxBytesPerWrite	= 60
-	spiTransferFinished = 0x10
-)
-
 
 // ----------------------------------------------------------------------------------
 //  Types
