@@ -1,4 +1,4 @@
-// A wrapper library for Microchip's MCP2210 USB-toSPI Bridge.
+// A wrapper library for Microchip's MCP2210 USB-to-SPI Bridge.
 // It is heavly based on github.com/GeertJohan/go.hid.
 package mcp2210
 
