@@ -17,6 +17,8 @@ const (
 	cmdGetInterrupt		= 0x12
 	cmdSetPinValue		= 0x30
 	cmdGetPinValue		= 0x31
+	cmdSetSPISettings	= 0x40
+	cmdGetSPISettins	= 0x41
 	cmdTransferSPI		= 0x42
 	cmdEEPROMRead		= 0x50
 	cmdEEPROMWrite		= 0x51
@@ -30,6 +32,8 @@ const (
 type MCP2210 struct {
 	hidDevice *hid.Device
 	currentPinValues uint16
+	
+	spiSettings []byte
 }
 
 
@@ -54,6 +58,12 @@ func Open(vendorId uint16, productId uint16) (*MCP2210, error) {
 	if err != nil {
 		return nil, err
 	}	
+	
+	// read the spi settings
+	err = mcp.updateSPISettings() 
+	if err != nil {
+		return nil, err
+	}
 	
 	return &mcp, nil
 }
