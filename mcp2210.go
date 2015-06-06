@@ -4,6 +4,7 @@ package mcp2210
 
 import (
 	"github.com/GeertJohan/go.hid"
+	"sync"
 )
 
 
@@ -34,6 +35,8 @@ type MCP2210 struct {
 	currentPinValues uint16
 	
 	spiSettings []byte
+	
+	mutex sync.Mutex
 }
 
 
@@ -51,7 +54,7 @@ func Open(vendorId uint16, productId uint16) (*MCP2210, error) {
 	}
 	
 	// assemble mcp instance
-	mcp := MCP2210{ hidDevice: device }
+	mcp := MCP2210{ hidDevice: device, mutex: sync.Mutex{} }
 	
 	// read back current GPIO pin values
 	err = mcp.updateGPIOValues()
