@@ -56,7 +56,6 @@ func (this *MCP2210) Xfer(sendBuffer []byte) ([]byte, error) {
 	}
 		
 	// send the initial transfer command with the data to send
-	this.mutex.Lock()
 	response, err := this.sendCommand(
 		cmdTransferSPI,	// opcode			
 		append([]byte{
@@ -66,7 +65,6 @@ func (this *MCP2210) Xfer(sendBuffer []byte) ([]byte, error) {
 		},
 		sendBuffer...)...,
 	)
-	this.mutex.Unlock()
 	
 	if err != nil {
 		return nil, err

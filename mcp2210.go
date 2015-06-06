@@ -92,6 +92,7 @@ func (this *MCP2210) Close() {
 // ----------------------------------------------------------------------------------
 
 func (this *MCP2210) sendCommand(opcode byte, payload ...byte) ([]byte, error) {
+	this.mutex.Lock()
 	// send command to mcp
 	_, err := this.hidDevice.Write(append([]byte{opcode}, payload...))
 	if err != nil {
@@ -101,5 +102,7 @@ func (this *MCP2210) sendCommand(opcode byte, payload ...byte) ([]byte, error) {
 	// read the response
 	response := make([]byte, 64)
 	_, err = this.hidDevice.Read(response)
+	this.mutex.Unlock()
+	
 	return response, err
 }
