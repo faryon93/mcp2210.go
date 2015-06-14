@@ -37,6 +37,7 @@ type MCP2210 struct {
 	spiSettings []byte
 	
 	mutex sync.Mutex
+	xferMutex sync.Mutex
 }
 
 
@@ -54,7 +55,7 @@ func Open(vendorId uint16, productId uint16) (*MCP2210, error) {
 	}
 	
 	// assemble mcp instance
-	mcp := MCP2210{ hidDevice: device, mutex: sync.Mutex{} }
+	mcp := MCP2210{ hidDevice: device, mutex: sync.Mutex{}, xferMutex: sync.Mutex{} }
 	
 	// read back current GPIO pin values
 	err = mcp.updateGPIOValues()

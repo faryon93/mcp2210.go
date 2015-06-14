@@ -50,6 +50,7 @@ func (this *MCP2210) Xfer(sendBuffer []byte) ([]byte, error) {
 		return nil, errors.New("cannot send more than 60 bytes at once")
 	}
 	
+	this.xferMutex.Lock()
 	// reset the bytes per transfer if needed
 	if (this.GetBytesPerTransfer() != len(sendBuffer)) {
 		this.setTransferBytes(uint16(len(sendBuffer)))
@@ -65,7 +66,7 @@ func (this *MCP2210) Xfer(sendBuffer []byte) ([]byte, error) {
 		},
 		sendBuffer...)...,
 	)
-	
+	this.xferMutex.Unlock()
 	if err != nil {
 		return nil, err
 	}
